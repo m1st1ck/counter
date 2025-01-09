@@ -1,18 +1,30 @@
 {
-  "name": "pullups",
+  "name": "counter",
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "build:android:local:apk:dev": "eas build -p android --profile apk:dev --local",
+    "publish:ota:dev": "eas update --branch dev"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "1.23.1",
+    "@shopify/react-native-skia": "1.5.0",
+    "date-fns": "^4.1.0",
     "expo": "~52.0.10",
+    "expo-file-system": "~18.0.6",
+    "expo-sensors": "~14.0.1",
+    "expo-sharing": "~13.0.0",
     "expo-status-bar": "~2.0.0",
+    "expo-updates": "~0.26.10",
+    "immer": "^10.1.1",
     "react": "18.3.1",
-    "react-native": "0.76.2"
+    "react-native": "0.76.2",
+    "react-native-reanimated": "~3.16.1",
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

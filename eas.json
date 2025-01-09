@@ -1,0 +1,42 @@
+{
+  "cli": {
+    "version": ">= 3.13.3",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "base": {
+      "cache": {
+        "key": "2"
+      },
+      "autoIncrement": true,
+      "distribution": "store"
+    },
+    "dev": {
+      "extends": "base",
+      "channel": "dev",
+      "env": {
+        "EXPO_PUBLIC_ENVIRONMENT": "dev"
+      }
+    },
+    "prod": {
+      "extends": "base",
+      "channel": "prod",
+      "env": {
+        "EXPO_PUBLIC_ENVIRONMENT": "prod"
+      }
+    },
+    "client": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "apk:dev": {
+      "extends": "dev",
+      "distribution": "internal"
+    },
+    "apk:prod": {
+      "extends": "prod",
+      "distribution": "internal"
+    }
+  },
+  "submit": {}
+}
