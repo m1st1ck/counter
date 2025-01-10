@@ -1,13 +1,17 @@
 import { isAfter, sub, add } from "date-fns";
-import React from "react";
-import { View, Pressable, Text } from "react-native";
-import { useCountStore } from "./store";
+import React, { useEffect, useRef } from "react";
+import { View, Pressable, Text, ScrollView } from "react-native";
 import { TimeCounter } from "./TimeCounter";
+import { useCountersStore } from "./useCountersStore";
+import { wp } from "./utils";
 
-export function Counter() {
-  const lastSessionCounts = useCountStore().count.filter((date) =>
-    isAfter(new Date(date), sub(new Date(), { hours: 2 }))
-  );
+export function Counter({ index }: { index: number }) {
+  const lastSessionCounts =
+    useCountersStore()
+      .counters.at(index)
+      ?.count.filter((date) =>
+        isAfter(new Date(date), sub(new Date(), { hours: 2 }))
+      ) || [];
 
   const groups = lastSessionCounts.reduce<string[][]>((acc, val) => {
     const lastGroup = acc.at(-1);
@@ -35,6 +39,15 @@ export function Counter() {
 
   const lastEntry = lastSessionCounts.at(-1);
 
+  const scrollRef = useRef<ScrollView>(null);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({ animated: false, x: 0 });
+    setTimeout(() => {
+      scrollRef.current?.scrollToEnd({ animated: true });
+    }, 69);
+  }, [index]);
+
   return (
     <View
       style={{
@@ -42,10 +55,13 @@ export function Counter() {
         alignItems: "center",
       }}
     >
-      <View
-        style={{
-          flexDirection: "row",
+      <ScrollView
+        ref={scrollRef}
+        horizontal
+        showsHorizontalScrollIndicator={false}
+        contentContainerStyle={{
           gap: 4,
+          paddingHorizontal: wp(50) - 20,
         }}
       >
         {groups.map((g, i) => {
@@ -66,7 +82,7 @@ export function Counter() {
             </View>
           );
         })}
-      </View>
+      </ScrollView>
 
       {lastEntry && <TimeCounter from={new Date(lastEntry).getTime()} />}
 
@@ -79,7 +95,13 @@ export function Counter() {
           alignItems: "center",
           justifyContent: "center",
         }}
-        onPress={useCountStore.getState().increment}
+        onPress={() => {
+          scrollRef.current?.scrollToEnd({ animated: true });
+          useCountersStore.getState().increment(index);
+          setTimeout(() => {
+            scrollRef.current?.scrollToEnd({ animated: true });
+          }, 69);
+        }}
       >
         <Text
           style={{
@@ -99,7 +121,10 @@ export function Counter() {
           alignItems: "center",
           justifyContent: "center",
         }}
-        onPress={useCountStore.getState().decrement}
+        onPress={() => {
+          scrollRef.current?.scrollToEnd({ animated: true });
+          useCountersStore.getState().decrement(index);
+        }}
       >
         <Text
           style={{

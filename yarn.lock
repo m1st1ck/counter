@@ -2806,6 +2806,11 @@ expo-sharing@~13.0.0:
   resolved "https://registry.yarnpkg.com/expo-sharing/-/expo-sharing-13.0.0.tgz#fbc46f4afdaa265a2811fe88c2a589aae2d2de0f"
   integrity sha512-b23ymicRmYn/Pjj05sl9tFZHN5cH9I1f0yiqY1Yk8Q3oCx0Aznri82DnTYA4T/J6D9vrkraX0wQ4jWVMOffmlg==
 
+expo-sqlite@~15.0.5:
+  version "15.0.5"
+  resolved "https://registry.yarnpkg.com/expo-sqlite/-/expo-sqlite-15.0.5.tgz#ab65e4fefd8d811843d17b60a963d6182c0f731c"
+  integrity sha512-PtkZB/w5uyPszt2oOnh9qG6Tn1nn8mDSi+KdjATQJyrWsUPHuhN/jugJ5NYD9/TcpDEZ/chttmTgkqIhjjwqeA==
+
 expo-status-bar@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/expo-status-bar/-/expo-status-bar-2.0.0.tgz#dd99adc2ace12a24c92718cd0f97b93347103393"
@@ -4717,6 +4722,11 @@ react-native-reanimated@~3.16.1:
     "@babel/preset-typescript" "^7.16.7"
     convert-source-map "^2.0.0"
     invariant "^2.2.4"
+
+react-native-safe-area-context@4.12.0:
+  version "4.12.0"
+  resolved "https://registry.yarnpkg.com/react-native-safe-area-context/-/react-native-safe-area-context-4.12.0.tgz#17868522a55bbc6757418c94a1b4abdda6b045d9"
+  integrity sha512-ukk5PxcF4p3yu6qMZcmeiZgowhb5AsKRnil54YFUUAXVIS7PJcMHGGC+q44fCiBg44/1AJk5njGMez1m9H0BVQ==
 
 react-native@0.76.2:
   version "0.76.2"

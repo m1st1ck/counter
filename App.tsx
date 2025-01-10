@@ -1,26 +1,54 @@
-import { Pressable, Text, View } from "react-native";
-import { useCountStore } from "./store";
+import {
+  Alert,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Calendar } from "./Calendar";
 import { Counter } from "./Counter";
+import { AntDesign } from "@expo/vector-icons";
+import { useCountersStore } from "./useCountersStore";
+import { useCountStore } from "./store";
 
 export default function App() {
+  const [activeCounter, setActiveCounter] = useState(0);
+
+  useEffect(() => {
+    const count = useCountStore.getState().count;
+    const counters = useCountersStore.getState().counters;
+    if (count.length && !counters.length) {
+      useCountersStore.setState({
+        counters: [{ name: "PL", count }],
+      });
+
+      useCountStore.setState({ count: [] });
+    }
+  }, []);
+
   return (
-    <View
-      style={{
-        flex: 1,
-        paddingHorizontal: 10,
-      }}
-    >
+    <SafeAreaView style={{ flex: 1 }}>
       <StatusBar style="dark" />
+
+      <CounterSelector
+        activeCounter={activeCounter}
+        setActiveCounter={setActiveCounter}
+      />
+
       {/* <AccelerationTracker /> */}
 
-      <Calendar />
+      <View style={{ paddingHorizontal: 16, marginTop: 8 }}>
+        <Calendar index={activeCounter} />
+      </View>
 
-      <Counter />
+      <View style={{ flex: 1 }}></View>
+
+      <Counter index={activeCounter} />
 
       <View style={{ flex: 1 }}></View>
 
@@ -33,7 +61,7 @@ export default function App() {
 
           FileSystem.writeAsStringAsync(
             fileUri,
-            JSON.stringify(useCountStore.getState().count),
+            JSON.stringify(useCountersStore.getState().counters),
             {
               encoding: FileSystem.EncodingType.UTF8,
             }
@@ -50,6 +78,113 @@ export default function App() {
       </Pressable>
 
       <View style={{ flex: 1 }}></View>
+    </SafeAreaView>
+  );
+}
+
+function CounterSelector({
+  activeCounter,
+  setActiveCounter,
+}: {
+  activeCounter: number;
+  setActiveCounter: (index: number) => void;
+}) {
+  const counters = useCountersStore().counters;
+
+  return (
+    <View>
+      <ScrollView
+        horizontal
+        contentContainerStyle={{
+          gap: 8,
+          paddingHorizontal: 16,
+        }}
+      >
+        {counters.map((counter, index) => (
+          <Pressable
+            key={index}
+            style={{
+              borderRadius: 100,
+              borderWidth: 1,
+              alignItems: "center",
+              justifyContent: "center",
+              width: 48,
+              height: 48,
+              padding: 4,
+              borderColor: index === activeCounter ? "tomato" : undefined,
+            }}
+            onLongPress={() => {
+              Alert.alert("Options", undefined, [
+                {
+                  text: "Rename",
+                  onPress: () => {
+                    Alert.prompt(
+                      "Name?",
+                      undefined,
+                      (text) => {
+                        useCountersStore.getState().renameCounter(index, text);
+                      },
+                      undefined,
+                      counter.name
+                    );
+                  },
+                },
+                {
+                  text: "Delete",
+                  style: "destructive",
+                  onPress: () => {
+                    Alert.alert(
+                      "Delete counter?",
+                      "Are you sure, the process is irreversible?",
+                      [
+                        {
+                          style: "destructive",
+                          text: "Delete",
+                          onPress: () => {
+                            useCountersStore.getState().deleteCounter(index);
+                          },
+                        },
+                        {
+                          text: "Cancel",
+                          isPreferred: true,
+                        },
+                      ]
+                    );
+                  },
+                },
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                },
+              ]);
+            }}
+            onPress={() => {
+              setActiveCounter(index);
+            }}
+          >
+            <Text adjustsFontSizeToFit numberOfLines={1}>
+              {counter.name}
+            </Text>
+          </Pressable>
+        ))}
+        <Pressable
+          style={{
+            borderRadius: 100,
+            borderWidth: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            width: 48,
+            height: 48,
+          }}
+          onPress={() => {
+            Alert.prompt("Name?", undefined, (text) => {
+              useCountersStore.getState().addCounter(text);
+            });
+          }}
+        >
+          <AntDesign name="plus" size={24} color="black" />
+        </Pressable>
+      </ScrollView>
     </View>
   );
 }

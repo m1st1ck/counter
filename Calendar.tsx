@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-import { useCountStore } from "./store";
 import {
   add,
   addDays,
@@ -15,12 +14,13 @@ import {
 } from "date-fns";
 import React from "react";
 import { getDurationFormatted } from "./utils";
+import { useCountersStore } from "./useCountersStore";
 
 const weeks = [0, 1, 2, 3, 4, 5];
 const daysInWeek = [0, 1, 2, 3, 4, 5, 6];
 
-export function Calendar() {
-  const counts = useCountStore().count;
+export function Calendar({ index }: { index: number }) {
+  const counts = useCountersStore().counters.at(index)?.count ?? [];
 
   const groups = counts.reduce<string[][]>((acc, val) => {
     const lastGroup = acc.at(-1);
@@ -60,7 +60,7 @@ export function Calendar() {
 
   return (
     <>
-      <View style={{ marginTop: 64, gap: 4 }}>
+      <View style={{ gap: 4 }}>
         <Text
           style={{
             color: "tomato",
