@@ -5,11 +5,11 @@ import {
   ScrollView,
   Text,
   View,
+  StatusBar,
 } from "react-native";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
 import React, { useEffect, useState } from "react";
-import { StatusBar } from "expo-status-bar";
 import { Calendar } from "./Calendar";
 import { Counter } from "./Counter";
 import { AntDesign } from "@expo/vector-icons";
@@ -33,12 +33,18 @@ export default function App() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <StatusBar style="dark" />
+      <StatusBar barStyle="dark-content" />
 
-      <CounterSelector
-        activeCounter={activeCounter}
-        setActiveCounter={setActiveCounter}
-      />
+      <View
+        style={{
+          marginTop: 8,
+        }}
+      >
+        <CounterSelector
+          activeCounter={activeCounter}
+          setActiveCounter={setActiveCounter}
+        />
+      </View>
 
       {/* <AccelerationTracker /> */}
 
