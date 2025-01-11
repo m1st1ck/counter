@@ -58,7 +58,7 @@ export function Alert() {
       {alerts.map((alert, i) => (
         <Dialog.Container key={i} visible headerStyle={{ margin: 0 }}>
           {!!alert.title && (
-            <Dialog.Title style={{ marginVertical: 12 }}>
+            <Dialog.Title style={{ marginVertical: 12, color: "black" }}>
               {alert.title}
             </Dialog.Title>
           )}
@@ -104,6 +104,7 @@ export function Alert() {
 
           {alert.type === "prompt" && (
             <Dialog.Input
+              defaultValue={alert.defaultValue}
               onChangeText={(text) => {
                 inputValueRef.current = text;
               }}
