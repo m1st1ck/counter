@@ -1,5 +1,4 @@
 import {
-  Alert,
   Pressable,
   SafeAreaView,
   ScrollView,
@@ -15,6 +14,7 @@ import { Counter } from "./Counter";
 import { AntDesign } from "@expo/vector-icons";
 import { useCountersStore } from "./useCountersStore";
 import { useCountStore } from "./store";
+import { Alert } from "./Alert";
 
 export default function App() {
   const [activeCounter, setActiveCounter] = useState(0);
@@ -84,6 +84,8 @@ export default function App() {
       </Pressable>
 
       <View style={{ flex: 1 }}></View>
+
+      <Alert />
     </SafeAreaView>
   );
 }
@@ -120,7 +122,7 @@ function CounterSelector({
               borderColor: index === activeCounter ? "tomato" : undefined,
             }}
             onLongPress={() => {
-              Alert.alert("Options", undefined, [
+              Alert.alert(undefined, undefined, [
                 {
                   text: "Rename",
                   onPress: () => {
@@ -130,21 +132,20 @@ function CounterSelector({
                       (text) => {
                         useCountersStore.getState().renameCounter(index, text);
                       },
-                      undefined,
                       counter.name
                     );
                   },
                 },
                 {
                   text: "Delete",
-                  style: "destructive",
+                  color: "tomato",
                   onPress: () => {
                     Alert.alert(
                       "Delete counter?",
                       "Are you sure, the process is irreversible?",
                       [
                         {
-                          style: "destructive",
+                          color: "tomato",
                           text: "Delete",
                           onPress: () => {
                             useCountersStore.getState().deleteCounter(index);
@@ -152,7 +153,6 @@ function CounterSelector({
                         },
                         {
                           text: "Cancel",
-                          isPreferred: true,
                         },
                       ]
                     );
@@ -160,7 +160,6 @@ function CounterSelector({
                 },
                 {
                   text: "Cancel",
-                  style: "cancel",
                 },
               ]);
             }}
